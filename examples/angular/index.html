@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" ng-app="ExampleApp">
+
+	<head>
+		<title>The Angular Way</title>
+
+		<style>
+			.nightMode {
+				color: white;
+				background:black;
+			}
+		</style>
+
+		<script src="angular.min.js"></script>
+		
+		<script>
+			var app = angular.module('ExampleApp', []);
+			
+			app.controller('ExampleController', function($scope){
+				$scope.name = 'Joe';
+				$scope.displayPreferences = {
+					nightMode : false
+				};
+			});
+		</script>
+
+	</head>
+
+	<body ng-controller="ExampleController" ng-class="{ nightMode : displayPreferences.nightMode }">
+
+		<h1>Profile</h1>
+		
+		<label>
+			Name
+			<input type="text" ng-model="name"/>
+		</label>
+
+		<div>
+			<h2>Display Preferences</h2>
+			<label>
+				<input type="checkbox" ng-model="displayPreferences.nightMode"/> Night mode
+			</label>
+		</div>
+		
+		<hr/>
+
+		<h1>Hello {{name}}</h1>
+		
+	</body>
+</html>

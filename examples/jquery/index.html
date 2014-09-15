@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<title>The jQuery Way</title>
+
+		<style>
+			.nightMode {
+				color: white;
+				background:black;
+			}
+		</style>
+
+		<script src="jquery-2.1.1.min.js"></script>
+
+		<script>
+			$(function(){
+				var profile = {
+					name : 'Joe',
+					displayPreferences : {
+						nightMode : false
+					}
+				};
+
+				var updateNightMode = function(){
+					if (profile.displayPreferences.nightMode){
+						$('body').addClass('nightMode');
+					} else {
+						$('body').removeClass('nightMode');
+					}
+				};
+
+				var updateName = function(){
+					$('#name').val(profile.name);
+					$('.name').text(profile.name);
+				};
+
+				// Set up interaction handlers
+				$('#name').on('keyup', function(e){
+					profile.name = this.value;
+					updateName();
+				});
+
+				$('#nightMode').on('change', function(e){
+					profile.displayPreferences.nightMode = this.checked;
+					updateNightMode();
+				});
+
+				// Initialize
+				updateName();
+				updateNightMode();
+			});
+		</script>
+
+	</head>
+
+	<body>
+
+		<h1>Profile</h1>
+		
+		<label>
+			Name
+			<input type="text" name="name" id="name"/>
+		</label>
+
+		<div>
+			<h2>Display Preferences</h2>
+			<label>
+				<input type="checkbox" id="nightMode"/> Night mode
+			</label>
+		</div>
+		
+		<hr/>
+
+		<h1>Hello <span class="name"></span></h1>
+		
+	</body>
+</html>
