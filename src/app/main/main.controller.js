@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('amitkumargithubio')
+angular.module('angularjsTutorial')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
       {

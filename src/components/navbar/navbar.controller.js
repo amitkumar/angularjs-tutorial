@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('amitkumargithubio')
+angular.module('angularjsTutorial')
   .controller('NavbarCtrl', function ($scope) {
     $scope.date = new Date();
   });

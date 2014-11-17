@@ -26,7 +26,7 @@
       ],
       "jQuery": {
         "name": "jquery",
-        "version": "2.x.x"
+        "version": "1.x.x"
       },
       "resource": {
         "name": "angular-resource",

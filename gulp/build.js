@@ -35,7 +35,7 @@ gulp.task('partials', function () {
       quotes: true
     }))
     .pipe($.ngHtml2js({
-      moduleName: 'amitkumargithubio'
+      moduleName: 'angularjsTutorial'
     }))
     .pipe(gulp.dest('.tmp'))
     .pipe($.size());
