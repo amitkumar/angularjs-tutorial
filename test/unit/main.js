@@ -8,8 +8,7 @@ describe('controllers', function(){
 
   it('should define more than 5 awesome things', inject(function($controller) {
     var mainCtrl = $controller('MainCtrl', {});
-
-    expect(angular.isArray(mainCtrl.awesomeThings)).toBeTruthy();
+    expect(angular.isArray(mainCtrl.awesomeThings)).toBeFalsy();
     expect(mainCtrl.awesomeThings.length > 5).toBeTruthy();
   }));
 
