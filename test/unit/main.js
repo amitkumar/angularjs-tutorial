@@ -13,6 +13,4 @@ describe('controllers', function(){
     expect(mainCtrl.awesomeThings.length > 5).toBeTruthy();
   }));
 
-
-
 });
