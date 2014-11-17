@@ -11,4 +11,10 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
 
     $urlRouterProvider.otherwise('/');
   })
+
+  .controller('GlobalCtrl', function(){
+    this.globalObject = {
+      message : 'Global'
+    };
+  })
 ;
