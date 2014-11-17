@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function () {
     this.awesomeThings = [
       {
         'key': 'angular',
