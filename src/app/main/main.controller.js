@@ -19,10 +19,10 @@ angular.module('angularjsTutorial')
       }
     };
 
-    // $scope.$watch(function () {
-    //   return self.todos;
-    // }, function (newVal, oldVal) {
-    //   console.log('self.todos changed', newVal);
-    // },
-    // true);
+    $scope.$watch(function () {
+      return self.todos;
+    }, function (newVal, oldVal) {
+      console.log('self.todos changed', newVal);
+    },
+    true);
   });
