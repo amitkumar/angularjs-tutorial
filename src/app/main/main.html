@@ -18,12 +18,14 @@
 
     <div class="col-md-12">
       <ul class="todos">
-        <li class="todo-item" ng-repeat="todo in mainCtrl.todos">
+        <li class="todo-item" ng-repeat="todo in mainCtrl.todos" ng-class="mainCtrl.getTodoClasses(todo)">
           <div class="input-group">
             <span class="input-group-addon">
               <input type="checkbox" ng-model="todo.done">
             </span>
-            <input type="text" class="form-control" ng-model="todo.description" />
+
+
+            <input type="text" class="form-control" ng-model="todo.description" ng-readonly="todo.done"/>
           </div>
         </li>
       </ul>

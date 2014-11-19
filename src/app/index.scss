@@ -19,5 +19,16 @@
 
   .todo-item {
     padding: .5em 0;
+
+    &.done {
+      input {
+        text-decoration: line-through;
+      }
+
+    }
+
+    p {
+      padding-left: 1em;
+    }
   }
 }
