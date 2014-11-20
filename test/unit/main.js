@@ -6,36 +6,52 @@ describe('controllers', function(){
   beforeEach(inject(function($rootScope) {
   }));
 
-  it('should define more than 5 awesome things', inject(function($controller) {
+  it('should have an array of todos', inject(function($controller) {
     var mainCtrl = $controller('MainCtrl', {});
 
-    expect(angular.isArray(mainCtrl.awesomeThings)).toBeTruthy();
-    expect(mainCtrl.awesomeThings.length > 5).toBeTruthy();
+    expect(angular.isArray(mainCtrl.todos)).toBeTruthy();
   }));
 
-  it('should have exactly 9 things', inject(function($controller) {
-    var ctrl = $controller('MainCtrl', {});
+  it('should be able to add a todo', inject(function($controller) {
+    var mainCtrl = $controller('MainCtrl', {});
 
-    expect(ctrl.awesomeThings.length === 9).toBeTruthy();
-  }));
-
-  it('should display items in expected positions', inject(function($controller) {
-    var ctrl = $controller('MainCtrl', {});
-
-    expect(ctrl.awesomeThings[0].key).toMatch('angular');
-  }));
-
-  it('should have all expected properties on each item', inject(function($controller) {
-    var ctrl = $controller('MainCtrl', {});
-
-    ctrl.awesomeThings.forEach(function(item){
-      expect(item.key).toBeDefined();
-      expect(item.title).toBeDefined();
-      expect(item.url).toBeDefined();
-      expect(item.description).toBeDefined();
-      expect(item.logo).toBeDefined();
+    mainCtrl.addTodo({
+      title : 'test title'
     });
 
+    expect(mainCtrl.todos.length === 1).toBeTruthy();
   }));
+
+  it('should be able to remove a todo', inject(function($controller) {
+    var mainCtrl = $controller('MainCtrl', {});
+
+    var title = 'test title';
+
+    mainCtrl.addTodo({
+      title : title
+    });
+
+    expect(mainCtrl.todos.length === 1).toBeTruthy();
+
+    mainCtrl.removeTodo(title);
+
+    expect(mainCtrl.todos.length === 0).toBeTruthy();
+  }));
+
+
+  it('should create "title" and "completed" properties on todos', inject(function($controller) {
+    var mainCtrl = $controller('MainCtrl', {});
+
+    mainCtrl.addTodo({
+      title : 'test title'
+    });
+
+    expect(mainCtrl.todos.length === 1).toBeTruthy();
+
+    expect(mainCtrl.todos[0].title).toBeDefined();
+    expect(mainCtrl.todos[0].completed).toBeDefined();
+    expect(mainCtrl.todos[0].completed).toBe(false);
+  }));
+
 
 });
