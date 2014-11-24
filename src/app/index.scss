@@ -15,13 +15,19 @@
   }
 }
 
+.btn-unstyled {
+  border:none;
+  background:none;
+  outline:none;
+}
+
 .todos {
   padding: 1em 0;
 
   .todo-item {
     list-style: none;
     padding: .5em 0;
-    @include transition(0.5s ease opacity);
+    @include transition(0.3s ease opacity);
 
     &.ng-enter {
       opacity: 0;
