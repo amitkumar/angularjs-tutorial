@@ -1,3 +1,5 @@
+@import 'compass/css3';
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -19,6 +21,15 @@
   .todo-item {
     list-style: none;
     padding: .5em 0;
+    @include transition(0.5s ease opacity);
+
+    &.ng-enter {
+      opacity: 0;
+
+      &.ng-enter-active {
+        opacity: 1;
+      }
+    }
 
     &.completed {
       input {
@@ -27,3 +38,5 @@
     }
   }
 }
+
+
