@@ -27,25 +27,31 @@
   .todo-item {
     list-style: none;
     padding: .5em 0;
-    @include transition(0.3s ease all);
+    overflow:hidden;
+    position:relative;
+    @include transition(1s ease opacity);
+
 
     &.ng-enter {
       opacity: 0;
       max-height:0;
+      padding: 0;
 
       &.ng-enter-active {
         opacity: 1;
-        max-height:2em;
+        max-height:4em;
+        padding: .5em 0;
       }
     }
 
     &.ng-leave {
       opacity: 1;
-      max-height:2em;
+      max-height:4em;
 
       &.ng-leave-active {
         opacity: 0;
         max-height:0;
+        padding: 0;
       }
     }
 
