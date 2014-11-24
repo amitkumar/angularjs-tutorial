@@ -24,7 +24,7 @@
 .fade-height-animation {
   overflow:hidden;
   position:relative;
-  @include transition(1s ease opacity);
+  @include transition(.5s ease all);
 
 
   &.ng-enter {
