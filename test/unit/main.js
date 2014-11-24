@@ -17,32 +17,33 @@ describe('controllers', function(){
     expect(angular.isArray(mainCtrl.todos)).toBeTruthy();
   }));
 
-  it('should be able to add a todo', inject(function($controller) {
+  it('should be able to add a todo and return the newly created todo', inject(function($controller) {
     var mainCtrl = $controller('MainCtrl', {
       $scope : scope
     });
 
-    mainCtrl.addTodo({
+    var newTodo = mainCtrl.addTodo({
       title : 'test title'
     });
 
     expect(mainCtrl.todos.length === 1).toBeTruthy();
+    expect(newTodo).toBeDefined();
   }));
 
-  it('should be able to remove a todo', inject(function($controller) {
+  it('should be able to remove a todo by reference', inject(function($controller) {
     var mainCtrl = $controller('MainCtrl', {
       $scope : scope
     });
 
     var title = 'test title';
 
-    mainCtrl.addTodo({
+    var newTodo = mainCtrl.addTodo({
       title : title
     });
 
     expect(mainCtrl.todos.length === 1).toBeTruthy();
 
-    mainCtrl.removeTodo(title);
+    mainCtrl.removeTodoByReference(newTodo);
 
     expect(mainCtrl.todos.length === 0).toBeTruthy();
   }));
