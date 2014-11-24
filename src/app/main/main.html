@@ -1,34 +1,37 @@
 <div class="container">
-  <div ng-bind="mainCtrl.globalObject.message"></div>
   <div ng-include="'components/navbar/navbar.html'"></div>
 
+  <h1>Todo</h1>
+
+
   <div class="row">
-
     <div class="col-md-12">
-      <h2>TODOS</h2>
-    </div>
+      <form ng-submit="mainCtrl.addTodo({ title : mainCtrl.newTodoTitle })">
+        <div class="input-group">
 
-
-    <div class="col-md-12">
-      <form ng-submit="mainCtrl.addTodo()" name="newTodoForm">
-        <input type="text" ng-model="mainCtrl.newTodo" placeholder="Add new item" ng-required="true" name="newTodoDescription" ng-class="{'form-control' : true }"/>
+          <input type="text" class="form-control" ng-model="mainCtrl.newTodoTitle" placeholder="Type title here" />
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Submit</button>
+          </span>
+        </div>
       </form>
     </div>
+  </div>
 
-
+  <div class="row">
     <div class="col-md-12">
       <ul class="todos">
         <li class="todo-item" ng-repeat="todo in mainCtrl.todos" ng-class="mainCtrl.getTodoClasses(todo)">
           <div class="input-group">
             <span class="input-group-addon">
-              <input type="checkbox" ng-model="todo.done" />
+              <input type="checkbox" ng-model="todo.completed" />
             </span>
-            <input type="text" class="form-control" ng-model="todo.description" ng-readonly="todo.done"/>
+            <input type="text" class="form-control" ng-model="todo.title" ng-readonly="todo.completed"/>
           </div>
+
         </li>
       </ul>
     </div>
-
   </div>
 
 </div>
