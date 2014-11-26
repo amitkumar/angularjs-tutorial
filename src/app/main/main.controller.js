@@ -40,16 +40,4 @@ angular.module('angularjsTutorial')
       }
     };
 
-    $scope.$watch(function(){
-      return self.newTodoTitle;
-    }, function(newValue, oldValue){
-      console.log('self.newTodoTitle changed', newValue);
-    });
-
-    $scope.$watch(function(){
-      return self.todos;
-    }, function(newValue, oldValue){
-      console.log('self.todos changed', newValue);
-    },
-    true);
   });
