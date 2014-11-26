@@ -21,16 +21,30 @@
   outline:none;
 }
 
-.fade-height-animation {
+.flip-animation {
   overflow:hidden;
   position:relative;
+  @include transition(.5s ease all);
+
 
   &.ng-enter {
     @include animation(flipInX .5s);
+    max-height: 0;
+
+    &.ng-enter-active {
+      max-height: 4em;
+    }
   }
 
   &.ng-leave {
-    @include animation(flipOutX .5s);
+    @include animation(flipOutX .3s);
+    max-height: 4em;
+
+    &.ng-leave-active {
+      max-height: 0;
+      padding: 0;
+      opacity:0;
+    }
   }
 }
 
