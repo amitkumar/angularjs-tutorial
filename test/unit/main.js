@@ -45,7 +45,7 @@ describe('controllers', function(){
 
     mainCtrl.removeTodoByReference(newTodo);
 
-    expect(mainCtrl.todos.length === 0).toBeTruthy();
+    expect(mainCtrl.getTodos().length === 0).toBeTruthy();
   }));
 
 

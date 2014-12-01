@@ -1,21 +1,21 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, TodoService) {
     console.log('MainCtrl instantiated');
     var self = this;
 
     self.newTodoTitle = '';
 
-    self.todos = [];
+    self.todos = TodoService.getTodos();
+
+    self.getTodos = function(){
+      return self.todos = TodoService.getTodos();
+    };
 
     self.addTodo = function(options){
-      var newTodo = {
-        title : options.title,
-        completed : false
-      };
-
-      self.todos.push(newTodo);
+      var newTodo = TodoService.addTodo(options);
+      self.getTodos();
 
       self.newTodoTitle = '';
 
@@ -24,15 +24,13 @@ angular.module('angularjsTutorial')
 
 
     self.removeTodoByReference = function(todo){
-      self.todos = self.todos.filter(function(item){
-        return item !== todo;
-      });
+      TodoService.removeTodoByReference(todo);
+      self.getTodos();
     };
 
     self.removeTodo = function(title){
-      self.todos = self.todos.filter(function(item){
-        return item.title !== title;
-      });
+      TodoService.removeTodo(title);
+      self.getTodos();
     };
 
     self.getTodoClasses = function(todo){
