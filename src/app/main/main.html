@@ -21,12 +21,12 @@
   <div class="row">
     <div class="col-md-12">
       <ul class="todos">
-        <li class="todo-item flip-animation" ng-repeat="todo in mainCtrl.todos" ng-class="mainCtrl.getTodoClasses(todo)">
+        <li class="todo-item flip-animation" ng-repeat="todo in mainCtrl.todos track by todo.id" ng-class="mainCtrl.getTodoClasses(todo)">
           <div class="input-group">
             <span class="input-group-addon">
-              <input type="checkbox" ng-model="todo.completed" />
+              <input type="checkbox" ng-model="todo.completed" ng-change="mainCtrl.saveTodos()"/>
             </span>
-            <input type="text" class="form-control" ng-model="todo.title" ng-readonly="todo.completed"/>
+            <input type="text" class="form-control" ng-model="todo.title" ng-readonly="todo.completed" ng-change="mainCtrl.saveTodos()"/>
             <span class="input-group-addon">
               <button ng-click="mainCtrl.removeTodoByReference(todo)" class="btn-unstyled"><span class="glyphicon glyphicon-remove-circle"></span><span class="sr-only">Remove</span></button>
             </span>

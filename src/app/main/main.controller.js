@@ -7,10 +7,11 @@ angular.module('angularjsTutorial')
 
     self.newTodoTitle = '';
 
-    self.todos = TodoService.getTodos();
 
     self.getTodos = function(){
-      return self.todos = TodoService.getTodos();
+       self.todos = TodoService.getTodos();
+       console.log('self.todos', self.todos);
+       return self.todos;
     };
 
     self.addTodo = function(options){
@@ -39,4 +40,10 @@ angular.module('angularjsTutorial')
       }
     };
 
+    self.saveTodos = function(){
+      console.log('saveTodos');
+      TodoService.saveTodos();
+    }
+
+    self.getTodos();
   }]);
