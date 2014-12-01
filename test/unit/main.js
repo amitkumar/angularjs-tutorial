@@ -49,21 +49,7 @@ describe('controllers', function(){
   }));
 
 
-  it('should create "title" and "completed" properties on todos', inject(function($controller) {
-    var mainCtrl = $controller('MainCtrl', {
-      $scope : scope
-    });
 
-    mainCtrl.addTodo({
-      title : 'test title'
-    });
-
-    expect(mainCtrl.todos.length === 1).toBeTruthy();
-
-    expect(mainCtrl.todos[0].title).toBeDefined();
-    expect(mainCtrl.todos[0].completed).toBeDefined();
-    expect(mainCtrl.todos[0].completed).toBe(false);
-  }));
 
 
   // describe('#getTodoClasses', function(){

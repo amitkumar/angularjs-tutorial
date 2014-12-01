@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .controller('MainCtrl', function ($scope, TodoService) {
+  .controller('MainCtrl', ['$scope', 'TodoService', function ($scope, TodoService) {
     console.log('MainCtrl instantiated');
     var self = this;
 
@@ -39,4 +39,4 @@ angular.module('angularjsTutorial')
       }
     };
 
-  });
+  }]);
