@@ -2,6 +2,7 @@
 
 angular.module('angularjsTutorial')
   .controller('MainCtrl', function ($scope) {
+    console.log('MainCtrl instantiated');
     var self = this;
 
     self.newTodoTitle = '';
