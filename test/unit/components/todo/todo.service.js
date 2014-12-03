@@ -20,7 +20,7 @@ describe('TodoService', function(){
   describe('#addTodo', function(){
     it('should be able to add a todo and return the newly created todo', function(done) {
       var newTodo = TodoService.addTodo({
-        title : 'test title'
+        title : 'test title 1'
       });
 
       expect(TodoService.getTodos().length === 1).toBeTruthy();
@@ -29,7 +29,7 @@ describe('TodoService', function(){
 
     it('should create "title" and "completed" properties on todos', inject(function($controller) {
       TodoService.addTodo({
-        title : 'test title'
+        title : 'test title 2'
       });
 
       var todos = TodoService.getTodos();
@@ -44,10 +44,10 @@ describe('TodoService', function(){
 
   });
 
-  describe('#removeTodoByReference', function(){
+  describe('#removeTodoById', function(){
     it('should be able to remove a todo by reference', inject(function($controller) {
 
-      var title = 'test title';
+      var title = 'test title 3';
 
       var newTodo = TodoService.addTodo({
         title : title
@@ -55,8 +55,9 @@ describe('TodoService', function(){
 
       expect(TodoService.getTodos().length === 1).toBeTruthy();
 
-      TodoService.removeTodoByReference(newTodo);
+      TodoService.removeTodoById(newTodo.id);
 
+      // expect(true).toBeTruthy();
       expect(TodoService.getTodos().length === 0).toBeTruthy();
     }));
   });

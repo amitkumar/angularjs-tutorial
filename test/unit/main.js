@@ -30,7 +30,7 @@ describe('controllers', function(){
     expect(newTodo).toBeDefined();
   }));
 
-  it('should be able to remove a todo by reference', inject(function($controller) {
+  it('should be able to remove a todo by id', inject(function($controller) {
     var mainCtrl = $controller('MainCtrl', {
       $scope : scope
     });
@@ -43,7 +43,7 @@ describe('controllers', function(){
 
     expect(mainCtrl.todos.length === 1).toBeTruthy();
 
-    mainCtrl.removeTodoByReference(newTodo);
+    mainCtrl.removeTodo(newTodo);
 
     expect(mainCtrl.getTodos().length === 0).toBeTruthy();
   }));
