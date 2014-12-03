@@ -9,23 +9,23 @@ angular.module('angularjsTutorial')
 
 
     self.getTodos = function(){
-       self.todos = TodoService.getTodos();
-       return self.todos;
+       return TodoService.getTodos().then(function(todos){
+          self.todos = todos;
+       });
     };
 
     self.addTodo = function(options){
-      var newTodo = TodoService.addTodo(options);
-      self.getTodos();
-
-      self.newTodoTitle = '';
-
-      return newTodo;
+      return TodoService.addTodo(options)
+        .then(self.getTodos)
+        .then(function(newTodo){
+          self.newTodoTitle = '';
+        });
     };
 
 
     self.removeTodo = function(todo){
-      TodoService.removeTodoById(todo.id);
-      self.getTodos();
+      return TodoService.removeTodoById(todo.id)
+        .then(self.getTodos);
     };
 
 
@@ -36,7 +36,7 @@ angular.module('angularjsTutorial')
     };
 
     self.saveTodos = function(){
-      TodoService.saveTodos();
+      return TodoService.saveTodos();
     }
 
     self.getTodos();

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .factory('TodoService', ['$window', '$log', function ($window, $log) {
+  .factory('TodoService', ['$window', '$log', '$q', function ($window, $log, $q) {
 
     $log.log('TodoService instantiated');
 
@@ -36,30 +36,60 @@ angular.module('angularjsTutorial')
 
     return {
       getTodos : function(){
-        getFromLocalStorage();
-        return todos;
+        var deferred = $q.defer();
+
+        setTimeout(function() {
+          $log.log('resolving getTodos promise');
+          deferred.resolve(getFromLocalStorage());
+        }, 50);
+
+        $log.log('returning getTodos deferred.promise');
+
+        return deferred.promise;
       },
 
       addTodo : function(options){
-        $log.log('addTodo', options);
-        var newTodo = {
-          id : Date.now().toString() + Math.random(),
-          title : options.title,
-          completed : false
-        };
+        var deferred = $q.defer();
 
-        todos.push(newTodo);
+        setTimeout(function() {
+          $log.log('resolving addTodo promise');
 
-        saveToLocalStorage();
+          var newTodo = {
+            id : Date.now().toString() + Math.random(),
+            title : options.title,
+            completed : false
+          };
 
-        return newTodo;
+          todos.push(newTodo);
+
+          saveToLocalStorage();
+
+          deferred.resolve(newTodo);
+        }, 50);
+
+        $log.log('returning addTodo deferred.promise');
+
+        return deferred.promise;
+
       },
 
       removeTodoById : function(id){
-        todos = todos.filter(function(item){
-          return item.id !== id;
-        });
-        saveToLocalStorage();
+        var deferred = $q.defer();
+
+        setTimeout(function() {
+          $log.log('resolving removeTodoById promise');
+
+          todos = todos.filter(function(item){
+            return item.id !== id;
+          });
+          saveToLocalStorage();
+
+          deferred.resolve();
+        }, 50);
+
+        $log.log('returning removeTodoById deferred.promise');
+
+        return deferred.promise;
       },
 
       saveTodos : function(){
