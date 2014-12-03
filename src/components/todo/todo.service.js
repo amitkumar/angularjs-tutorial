@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .factory('TodoService', ['$window', '$log', '$q', function ($window, $log, $q) {
+  .factory('TodoService', ['$window', '$log', '$q', '$timeout', function ($window, $log, $q, $timeout) {
 
     $log.log('TodoService instantiated');
 
@@ -38,7 +38,7 @@ angular.module('angularjsTutorial')
       getTodos : function(){
         var deferred = $q.defer();
 
-        setTimeout(function() {
+        $timeout(function() {
           $log.log('resolving getTodos promise');
           deferred.resolve(getFromLocalStorage());
         }, 50);
@@ -51,7 +51,7 @@ angular.module('angularjsTutorial')
       addTodo : function(options){
         var deferred = $q.defer();
 
-        setTimeout(function() {
+        $timeout(function() {
           $log.log('resolving addTodo promise');
 
           var newTodo = {
@@ -76,7 +76,7 @@ angular.module('angularjsTutorial')
       removeTodoById : function(id){
         var deferred = $q.defer();
 
-        setTimeout(function() {
+        $timeout(function() {
           $log.log('resolving removeTodoById promise');
 
           todos = todos.filter(function(item){
