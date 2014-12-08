@@ -1,35 +1,25 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .factory('TodoService', ['$window', '$log', '$q', '$timeout', function ($window, $log, $q, $timeout) {
+  .constant('firebaseUrl', 'https://ak-angularjstutorial.firebaseio.com/');
 
+angular.module('angularjsTutorial')
+  .factory('TodoService', ['$window', '$log', '$q', '$timeout', '$firebase', 'firebaseUrl', function ($window, $log, $q, $timeout, $firebase, firebaseUrl) {
     $log.log('TodoService instantiated');
 
     var localStorageTodosKey = 'todos',
         todos;
 
-    var getFromLocalStorage = function(){
-      var result = $window.localStorage.getItem(localStorageTodosKey);
-      if (result){
-        todos = JSON.parse(result);
-      }
-      return todos;
-    };
-
-    var saveToLocalStorage = function(){
-      $log.log('saveToLocalStorage', todos, angular.toJson(todos));
-      $window.localStorage.setItem(localStorageTodosKey, angular.toJson(todos));
-    };
+    var firebaseReference = new Firebase(firebaseUrl + 'todos');
+    var firebaseSync = $firebase(firebaseReference);
 
     var init = function(){
-      getFromLocalStorage();
-
-      if (!todos){
-        todos = [];
-        saveToLocalStorage();
-      }
-
-      $log.log("$window.localStorage['todos']", $window.localStorage.getItem(localStorageTodosKey));
+      todos = firebaseSync.$asArray();
+      todos.$loaded().then(function(response){
+        console.log('todos loaded', response);
+      }).catch(function(err){
+        console.log('Error retrieving todos from firebase', err);
+      });
     };
 
     init();
@@ -37,65 +27,59 @@ angular.module('angularjsTutorial')
     return {
       getTodos : function(){
         var deferred = $q.defer();
-        console.log('in getTodos');
-        $timeout(function() {
-          console.log('inside getTodos timeout');
-          $log.log('resolving getTodos promise');
-          deferred.resolve(getFromLocalStorage());
-        }, 50);
-
-        $log.log('returning getTodos deferred.promise');
-
-        console.log('inside getTodos, returning promise');
+        deferred.resolve(todos);
         return deferred.promise;
       },
 
       addTodo : function(options){
         var deferred = $q.defer();
 
-        $timeout(function() {
+        todos.$add({
+          title : options.title,
+          completed : false
+        }).then(function(newTodoRef){
+          console.log('new todo added', newTodoRef.$id, newTodoRef.key(), newTodoRef, todos);
           $log.log('resolving addTodo promise');
-
-          var newTodo = {
-            id : Date.now().toString() + Math.random(),
-            title : options.title,
-            completed : false
-          };
-
-          todos.push(newTodo);
-
-          saveToLocalStorage();
-
-          deferred.resolve(newTodo);
-        }, 50);
-
-        $log.log('returning addTodo deferred.promise');
+          deferred.resolve(newTodoRef);
+        }).catch(function(err){
+          console.log('error adding todo', err);
+          $log.log('rejecting addTodo promise');
+          deferred.reject(err);
+        });
 
         return deferred.promise;
-
       },
 
-      removeTodoById : function(id){
+      removeTodo : function(todo){
         var deferred = $q.defer();
 
-        $timeout(function() {
-          $log.log('resolving removeTodoById promise');
-
-          todos = todos.filter(function(item){
-            return item.id !== id;
-          });
-          saveToLocalStorage();
-
-          deferred.resolve();
-        }, 50);
-
-        $log.log('returning removeTodoById deferred.promise');
+        todos.$remove(todo).then(function(todoRef){
+          $log.log('resolving removeTodo promise');
+          deferred.resolve(todoRef);
+        })
+        .catch(function(err){
+          console.log('error removing todo', err);
+          $log.log('rejecting removeTodo promise');
+          deferred.reject(err);
+        });
 
         return deferred.promise;
       },
 
-      saveTodos : function(){
-        saveToLocalStorage();
+      saveTodo : function(todo){
+        var deferred = $q.defer();
+
+        todos.$save(todo).then(function(todoRef){
+          $log.log('resolving saveTodo promise');
+          deferred.resolve(todoRef);
+        })
+        .catch(function(err){
+          console.log('error saving todo', err);
+          $log.log('rejecting saveTodo promise');
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
       }
     };
   }]);

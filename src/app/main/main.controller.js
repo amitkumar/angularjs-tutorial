@@ -17,8 +17,7 @@ angular.module('angularjsTutorial')
     };
 
     self.addTodo = function(options){
-      var deferred = $q.defer(),
-        newTodo;
+      var newTodo;
 
       TodoService.addTodo(options)
         .then(function(newTodoResult){
@@ -26,24 +25,12 @@ angular.module('angularjsTutorial')
         },
         function(err){
           console.log(err);
-        })
-        .then(self.getTodos)
-        .then(function(todos){
-          self.newTodoTitle = '';
-          deferred.resolve(newTodo);
-        })
-        .catch(function(err){
-          console.log(err);
-          deferred.reject(err);
         });
-
-      return deferred.promise;
     };
 
 
     self.removeTodo = function(todo){
-      return TodoService.removeTodoById(todo.id)
-        .then(self.getTodos);
+      return TodoService.removeTodo(todo);
     };
 
 
@@ -53,8 +40,8 @@ angular.module('angularjsTutorial')
       }
     };
 
-    self.saveTodos = function(){
-      return TodoService.saveTodos();
+    self.saveTodo = function(todo){
+      return TodoService.saveTodo(todo);
     }
 
     self.getTodos();

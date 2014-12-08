@@ -1,72 +1,72 @@
-'use strict';
+// 'use strict';
 
-describe('controllers', function(){
-  var scope;
+// describe('controllers', function(){
+//   var scope;
 
-  beforeEach(module('angularjsTutorial'));
+//   beforeEach(module('angularjsTutorial'));
 
-  beforeEach(inject(function($rootScope) {
-    scope = $rootScope.$new();
-  }));
+//   beforeEach(inject(function($rootScope) {
+//     scope = $rootScope.$new();
+//   }));
 
-  it('should have an array of todos', inject(function($controller) {
-    var mainCtrl = $controller('MainCtrl', {
-      $scope : scope
-    });
+//   it('should have an array of todos', inject(function($controller) {
+//     var mainCtrl = $controller('MainCtrl', {
+//       $scope : scope
+//     });
 
-    expect(angular.isArray(mainCtrl.todos)).toBeTruthy();
-  }));
+//     expect(angular.isArray(mainCtrl.todos)).toBeTruthy();
+//   }));
 
-  it('should be able to add a todo and return the newly created todo', inject(function($controller) {
-    var mainCtrl = $controller('MainCtrl', {
-      $scope : scope
-    });
+//   it('should be able to add a todo and return the newly created todo', inject(function($controller) {
+//     var mainCtrl = $controller('MainCtrl', {
+//       $scope : scope
+//     });
 
-    var newTodo = mainCtrl.addTodo({
-      title : 'test title'
-    });
+//     var newTodo = mainCtrl.addTodo({
+//       title : 'test title'
+//     });
 
-    expect(mainCtrl.todos.length === 1).toBeTruthy();
-    expect(newTodo).toBeDefined();
-  }));
+//     expect(mainCtrl.todos.length === 1).toBeTruthy();
+//     expect(newTodo).toBeDefined();
+//   }));
 
-  it('should be able to remove a todo by id', inject(function($controller) {
-    var mainCtrl = $controller('MainCtrl', {
-      $scope : scope
-    });
+//   it('should be able to remove a todo by id', inject(function($controller) {
+//     var mainCtrl = $controller('MainCtrl', {
+//       $scope : scope
+//     });
 
-    var title = 'test title';
+//     var title = 'test title';
 
-    var newTodo = mainCtrl.addTodo({
-      title : title
-    });
+//     var newTodo = mainCtrl.addTodo({
+//       title : title
+//     });
 
-    expect(mainCtrl.todos.length === 1).toBeTruthy();
+//     expect(mainCtrl.todos.length === 1).toBeTruthy();
 
-    mainCtrl.removeTodo(newTodo);
+//     mainCtrl.removeTodo(newTodo);
 
-    expect(mainCtrl.getTodos().length === 0).toBeTruthy();
-  }));
-
-
+//     expect(mainCtrl.getTodos().length === 0).toBeTruthy();
+//   }));
 
 
 
-  // describe('#getTodoClasses', function(){
-  //   it('should return "completed" when a todo is completed', inject(function($controller) {
-  //     var mainCtrl = $controller('MainCtrl', {
-  //       $scope : scope
-  //     });
 
-  //     mainCtrl.addTodo({
-  //       title : 'test title'
-  //     });
 
-  //     expect(mainCtrl.todos.length === 1).toBeTruthy();
+//   // describe('#getTodoClasses', function(){
+//   //   it('should return "completed" when a todo is completed', inject(function($controller) {
+//   //     var mainCtrl = $controller('MainCtrl', {
+//   //       $scope : scope
+//   //     });
 
-  //     expect(mainCtrl.todos[0].title).toBeDefined();
-  //     expect(mainCtrl.todos[0].completed).toBeDefined();
-  //   }));
-  // });
+//   //     mainCtrl.addTodo({
+//   //       title : 'test title'
+//   //     });
 
-});
+//   //     expect(mainCtrl.todos.length === 1).toBeTruthy();
+
+//   //     expect(mainCtrl.todos[0].title).toBeDefined();
+//   //     expect(mainCtrl.todos[0].completed).toBeDefined();
+//   //   }));
+//   // });
+
+// });
