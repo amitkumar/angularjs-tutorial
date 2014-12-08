@@ -37,14 +37,16 @@ angular.module('angularjsTutorial')
     return {
       getTodos : function(){
         var deferred = $q.defer();
-
+        console.log('in getTodos');
         $timeout(function() {
+          console.log('inside getTodos timeout');
           $log.log('resolving getTodos promise');
           deferred.resolve(getFromLocalStorage());
         }, 50);
 
         $log.log('returning getTodos deferred.promise');
 
+        console.log('inside getTodos, returning promise');
         return deferred.promise;
       },
 
