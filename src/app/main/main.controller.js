@@ -19,13 +19,14 @@ angular.module('angularjsTutorial')
     self.addTodo = function(options){
       var newTodo;
 
-      TodoService.addTodo(options)
-        .then(function(newTodoResult){
-          newTodo = newTodoResult;
-        },
-        function(err){
-          console.log(err);
-        });
+      return TodoService.addTodo(options)
+      .then(function(newTodoResult){
+        newTodo = newTodoResult;
+        self.newTodoTitle = '';
+      },
+      function(err){
+        console.log(err);
+      });
     };
 
 

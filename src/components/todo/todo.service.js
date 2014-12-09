@@ -7,19 +7,13 @@ angular.module('angularjsTutorial')
   .factory('TodoService', ['$window', '$log', '$q', '$timeout', '$firebase', 'firebaseUrl', function ($window, $log, $q, $timeout, $firebase, firebaseUrl) {
     $log.log('TodoService instantiated');
 
-    var localStorageTodosKey = 'todos',
-        todos;
+    var todos;
 
     var firebaseReference = new Firebase(firebaseUrl + 'todos');
     var firebaseSync = $firebase(firebaseReference);
 
+
     var init = function(){
-      todos = firebaseSync.$asArray();
-      todos.$loaded().then(function(response){
-        console.log('todos loaded', response);
-      }).catch(function(err){
-        console.log('Error retrieving todos from firebase', err);
-      });
     };
 
     init();
@@ -27,7 +21,17 @@ angular.module('angularjsTutorial')
     return {
       getTodos : function(){
         var deferred = $q.defer();
-        deferred.resolve(todos);
+
+        firebaseSync.$asArray().$loaded().then(function(response){
+          todos = response;
+
+          $log.log('todos loaded', todos === response, response);
+
+          deferred.resolve(todos);
+        }).catch(function(err){
+          $log.log('Error retrieving todos from firebase', err);
+        });
+
         return deferred.promise;
       },
 
@@ -38,11 +42,11 @@ angular.module('angularjsTutorial')
           title : options.title,
           completed : false
         }).then(function(newTodoRef){
-          console.log('new todo added', newTodoRef.$id, newTodoRef.key(), newTodoRef, todos);
+          $log.log('new todo added', newTodoRef.$id, newTodoRef.key(), newTodoRef, todos);
           $log.log('resolving addTodo promise');
           deferred.resolve(newTodoRef);
         }).catch(function(err){
-          console.log('error adding todo', err);
+          $log.log('error adding todo', err);
           $log.log('rejecting addTodo promise');
           deferred.reject(err);
         });
@@ -58,7 +62,7 @@ angular.module('angularjsTutorial')
           deferred.resolve(todoRef);
         })
         .catch(function(err){
-          console.log('error removing todo', err);
+          $log.log('error removing todo', err);
           $log.log('rejecting removeTodo promise');
           deferred.reject(err);
         });
@@ -74,7 +78,7 @@ angular.module('angularjsTutorial')
           deferred.resolve(todoRef);
         })
         .catch(function(err){
-          console.log('error saving todo', err);
+          $log.log('error saving todo', err);
           $log.log('rejecting saveTodo promise');
           deferred.reject(err);
         });
