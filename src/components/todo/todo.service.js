@@ -90,14 +90,24 @@ angular.module('angularjsTutorial')
       saveTodo : function(todo){
         var deferred = $q.defer();
 
-        todos.$save(todo).then(function(todoRef){
-          $log.log('resolving saveTodo promise');
-          deferred.resolve(todoRef);
+        // PUT to save/replace data at the specified path. It's an overwrite operation.
+        // https://www.firebase.com/docs/rest/guide/saving-data.html#section-put
+
+        // For Firebase, invalid to send the $id property, so create a new, cleaned up object to send
+        var todoToPut = {
+          title : todo.title,
+          completed : todo.completed
+        };
+
+        $http.put(firebaseTodosUrl + '/' + todo.$id + '.json', todoToPut)
+        .success(function(data, status){
+          // success response is the data Firebase saved
+          $log.log('saveTodo success', data);
+          deferred.resolve(todo);
         })
-        .catch(function(err){
-          $log.log('error saving todo', err);
-          $log.log('rejecting saveTodo promise');
-          deferred.reject(err);
+        .error(function(data, status){
+          $log.log('saveTodo error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
