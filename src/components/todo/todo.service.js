@@ -4,32 +4,29 @@ angular.module('angularjsTutorial')
   .constant('firebaseUrl', 'https://ak-angularjstutorial.firebaseio.com/');
 
 angular.module('angularjsTutorial')
-  .factory('TodoService', ['$window', '$log', '$q', '$timeout', '$firebase', 'firebaseUrl', function ($window, $log, $q, $timeout, $firebase, firebaseUrl) {
+  .factory('TodoService', ['$window', '$log', '$q', '$http', 'firebaseUrl', function ($window, $log, $q, $http, firebaseUrl) {
     $log.log('TodoService instantiated');
 
+
     var todos;
-
-    var firebaseReference = new Firebase(firebaseUrl + 'todos');
-    var firebaseSync = $firebase(firebaseReference);
-
-
-    var init = function(){
-    };
-
-    init();
+    // Need to append '.json' to make Firebase return JSON instead of an HTML page
+    var firebaseTodosUrl = firebaseUrl + 'todos.json';
 
     return {
       getTodos : function(){
         var deferred = $q.defer();
 
-        firebaseSync.$asArray().$loaded().then(function(response){
-          todos = response;
-
-          $log.log('todos loaded', todos === response, response);
+        $http.get(firebaseTodosUrl)
+        .success(function(data, status){
+          $log.log('getTodos success', data);
+          // Right now, data is an object. Keys are the $id
+          todos = data;
 
           deferred.resolve(todos);
-        }).catch(function(err){
-          $log.log('Error retrieving todos from firebase', err);
+        })
+        .error(function(data, status){
+          $log.log('getTodos error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
