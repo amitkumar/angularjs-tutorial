@@ -9,14 +9,17 @@ angular.module('angularjsTutorial')
 
 
     var todos;
+
     // Need to append '.json' to make Firebase return JSON instead of an HTML page
-    var firebaseTodosUrl = firebaseUrl + 'todos.json';
+    // https://www.firebase.com/docs/rest/api/
+    var firebaseTodosUrl = firebaseUrl + 'todos';
 
     return {
       getTodos : function(){
         var deferred = $q.defer();
 
-        $http.get(firebaseTodosUrl)
+        // https://www.firebase.com/docs/rest/api/
+        $http.get(firebaseTodosUrl + '.json')
         .success(function(data, status){
           $log.log('getTodos success', data);
           // Right now, data is an object. Keys are the $id
@@ -39,17 +42,24 @@ angular.module('angularjsTutorial')
       addTodo : function(options){
         var deferred = $q.defer();
 
-        todos.$add({
+        var newTodo = {
           title : options.title,
           completed : false
-        }).then(function(newTodoRef){
-          $log.log('new todo added', newTodoRef.$id, newTodoRef.key(), newTodoRef, todos);
-          $log.log('resolving addTodo promise');
-          deferred.resolve(newTodoRef);
-        }).catch(function(err){
-          $log.log('error adding todo', err);
-          $log.log('rejecting addTodo promise');
-          deferred.reject(err);
+        };
+
+        // POST to add a child to a path and get an auto-generated key
+        // https://www.firebase.com/docs/rest/guide/saving-data.html#section-post
+        $http.post(firebaseTodosUrl + '.json', newTodo)
+        .success(function(data, status){
+          $log.log('addTodo success', data);
+          // success response provides the key of the new object at 'name'
+          newTodo.$id = data.name;
+          todos.push(newTodo);
+          deferred.resolve(newTodo);
+        })
+        .error(function(data, status){
+          $log.log('addTodo error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
