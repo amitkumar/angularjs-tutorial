@@ -20,7 +20,11 @@ angular.module('angularjsTutorial')
         .success(function(data, status){
           $log.log('getTodos success', data);
           // Right now, data is an object. Keys are the $id
-          todos = data;
+          todos = Object.keys(data).map(function(key){
+            var todo = data[key];
+            todo.$id = key;
+            return todo;
+          });
 
           deferred.resolve(todos);
         })
