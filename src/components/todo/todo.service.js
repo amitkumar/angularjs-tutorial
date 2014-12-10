@@ -68,14 +68,20 @@ angular.module('angularjsTutorial')
       removeTodo : function(todo){
         var deferred = $q.defer();
 
-        todos.$remove(todo).then(function(todoRef){
-          $log.log('resolving removeTodo promise');
-          deferred.resolve(todoRef);
+        // DELETE to remove a resource at the specified path
+        // https://www.firebase.com/docs/rest/api/#section-delete
+        // Want to call remove on the todo's specific path: https://demo.firebaseio.com/todos/-Jcp4Gm19g42Z8_Jinng
+        $http.delete(firebaseTodosUrl + '/' + todo.$id + '.json')
+        .success(function(data, status){
+          $log.log('removeTodo success', data);
+          // success response is empty
+          // Do an in-place array update so we don't change the reference for users of the service
+          todos.splice(todos.indexOf(todo), 1);
+          deferred.resolve(todo);
         })
-        .catch(function(err){
-          $log.log('error removing todo', err);
-          $log.log('rejecting removeTodo promise');
-          deferred.reject(err);
+        .error(function(data, status){
+          $log.log('removeTodo error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
