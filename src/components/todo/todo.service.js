@@ -4,32 +4,36 @@ angular.module('angularjsTutorial')
   .constant('firebaseUrl', 'https://ak-angularjstutorial.firebaseio.com/');
 
 angular.module('angularjsTutorial')
-  .factory('TodoService', ['$window', '$log', '$q', '$timeout', '$firebase', 'firebaseUrl', function ($window, $log, $q, $timeout, $firebase, firebaseUrl) {
+  .factory('TodoService', ['$window', '$log', '$q', '$http', 'firebaseUrl', function ($window, $log, $q, $http, firebaseUrl) {
     $log.log('TodoService instantiated');
+
 
     var todos;
 
-    var firebaseReference = new Firebase(firebaseUrl + 'todos');
-    var firebaseSync = $firebase(firebaseReference);
-
-
-    var init = function(){
-    };
-
-    init();
+    // Need to append '.json' to make Firebase return JSON instead of an HTML page
+    // https://www.firebase.com/docs/rest/api/
+    var firebaseTodosUrl = firebaseUrl + 'todos';
 
     return {
       getTodos : function(){
         var deferred = $q.defer();
 
-        firebaseSync.$asArray().$loaded().then(function(response){
-          todos = response;
-
-          $log.log('todos loaded', todos === response, response);
+        // https://www.firebase.com/docs/rest/api/
+        $http.get(firebaseTodosUrl + '.json')
+        .success(function(data, status){
+          $log.log('getTodos success', data);
+          // Right now, data is an object. Keys are the $id
+          todos = Object.keys(data).map(function(key){
+            var todo = data[key];
+            todo.$id = key;
+            return todo;
+          });
 
           deferred.resolve(todos);
-        }).catch(function(err){
-          $log.log('Error retrieving todos from firebase', err);
+        })
+        .error(function(data, status){
+          $log.log('getTodos error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
@@ -38,17 +42,24 @@ angular.module('angularjsTutorial')
       addTodo : function(options){
         var deferred = $q.defer();
 
-        todos.$add({
+        var newTodo = {
           title : options.title,
           completed : false
-        }).then(function(newTodoRef){
-          $log.log('new todo added', newTodoRef.$id, newTodoRef.key(), newTodoRef, todos);
-          $log.log('resolving addTodo promise');
-          deferred.resolve(newTodoRef);
-        }).catch(function(err){
-          $log.log('error adding todo', err);
-          $log.log('rejecting addTodo promise');
-          deferred.reject(err);
+        };
+
+        // POST to add a child to a path and get an auto-generated key
+        // https://www.firebase.com/docs/rest/guide/saving-data.html#section-post
+        $http.post(firebaseTodosUrl + '.json', newTodo)
+        .success(function(data, status){
+          $log.log('addTodo success', data);
+          // success response provides the key of the new object at 'name'
+          newTodo.$id = data.name;
+          todos.push(newTodo);
+          deferred.resolve(newTodo);
+        })
+        .error(function(data, status){
+          $log.log('addTodo error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
@@ -57,14 +68,20 @@ angular.module('angularjsTutorial')
       removeTodo : function(todo){
         var deferred = $q.defer();
 
-        todos.$remove(todo).then(function(todoRef){
-          $log.log('resolving removeTodo promise');
-          deferred.resolve(todoRef);
+        // DELETE to remove a resource at the specified path
+        // https://www.firebase.com/docs/rest/api/#section-delete
+        // Want to call remove on the todo's specific path: https://demo.firebaseio.com/todos/-Jcp4Gm19g42Z8_Jinng
+        $http.delete(firebaseTodosUrl + '/' + todo.$id + '.json')
+        .success(function(data, status){
+          $log.log('removeTodo success', data);
+          // success response is empty
+          // Do an in-place array update so we don't change the reference for users of the service
+          todos.splice(todos.indexOf(todo), 1);
+          deferred.resolve(todo);
         })
-        .catch(function(err){
-          $log.log('error removing todo', err);
-          $log.log('rejecting removeTodo promise');
-          deferred.reject(err);
+        .error(function(data, status){
+          $log.log('removeTodo error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
@@ -73,14 +90,24 @@ angular.module('angularjsTutorial')
       saveTodo : function(todo){
         var deferred = $q.defer();
 
-        todos.$save(todo).then(function(todoRef){
-          $log.log('resolving saveTodo promise');
-          deferred.resolve(todoRef);
+        // PUT to save/replace data at the specified path. It's an overwrite operation.
+        // https://www.firebase.com/docs/rest/guide/saving-data.html#section-put
+
+        // For Firebase, invalid to send the $id property, so create a new, cleaned up object to send
+        var todoToPut = {
+          title : todo.title,
+          completed : todo.completed
+        };
+
+        $http.put(firebaseTodosUrl + '/' + todo.$id + '.json', todoToPut)
+        .success(function(data, status){
+          // success response is the data Firebase saved
+          $log.log('saveTodo success', data);
+          deferred.resolve(todo);
         })
-        .catch(function(err){
-          $log.log('error saving todo', err);
-          $log.log('rejecting saveTodo promise');
-          deferred.reject(err);
+        .error(function(data, status){
+          $log.log('saveTodo error', data);
+          deferred.reject(data);
         });
 
         return deferred.promise;
