@@ -1,12 +1,12 @@
 <ul class="todos">
-  <li class="todo-item flip-animation" ng-repeat="todo in todos track by todo.$id" ng-class="getTodoClasses(todo)">
+  <li class="todo-item flip-animation" ng-repeat="todo in ajsTodoListCtrl.todos track by todo.$id" ng-class="ajsTodoListCtrl.getTodoClasses(todo)">
     <div class="input-group">
       <span class="input-group-addon">
-        <input type="checkbox" ng-model="todo.completed" ng-change="saveTodo(todo)"/>
+        <input type="checkbox" ng-model="todo.completed" ng-change="ajsTodoListCtrl.saveTodo(todo)"/>
       </span>
-      <input type="text" class="form-control" ng-model="todo.title" ng-readonly="todo.completed" ng-change="saveTodo(todo)"/>
+      <input type="text" class="form-control" ng-model="todo.title" ng-readonly="todo.completed" ng-change="ajsTodoListCtrl.saveTodo(todo)"/>
       <span class="input-group-addon">
-        <button ng-click="removeTodo(todo)" class="btn-unstyled"><span class="glyphicon glyphicon-remove-circle"></span><span class="sr-only">Remove</span></button>
+        <button ng-click="ajsTodoListCtrl.removeTodo(todo)" class="btn-unstyled"><span class="glyphicon glyphicon-remove-circle"></span><span class="sr-only">Remove</span></button>
       </span>
     </div>
 

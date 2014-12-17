@@ -14,32 +14,33 @@ angular.module('angularjsTutorial')
 
           $log.log('ajtTodoList controller instantiated');
 
-          $scope.getTodos = function(){
+          self.getTodos = function(){
              return TodoService.getTodos()
               .then(function(todos){
-                $scope.todos = todos;
-                return $scope.todos;
+                self.todos = todos;
+                return self.todos;
               });
           };
 
-          $scope.removeTodo = function(todo){
+          self.removeTodo = function(todo){
             return TodoService.removeTodo(todo);
           };
 
 
-          $scope.getTodoClasses = function(todo){
+          self.getTodoClasses = function(todo){
             return {
               'completed' : todo.completed
             }
           };
 
-          $scope.saveTodo = function(todo){
+          self.saveTodo = function(todo){
             return TodoService.saveTodo(todo);
           }
 
-          $scope.getTodos();
+          self.getTodos();
         }
-      ]
+      ],
+      controllerAs : 'ajsTodoListCtrl'
     }
 
   }
