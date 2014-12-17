@@ -9,6 +9,7 @@ angular.module('angularjsTutorial')
       onRemoveTodo : '&',
       onSaveTodo : '&'
     },
+    transclude : true,
     templateUrl: 'components/todo-list/todo-list.html',
     controller : [
         '$scope', '$element', '$attrs', '$transclude', '$log', 'TodoService',
