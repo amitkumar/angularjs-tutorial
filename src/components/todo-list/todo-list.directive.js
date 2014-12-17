@@ -5,6 +5,9 @@ angular.module('angularjsTutorial')
   return {
     restrict: 'E',
     scope: {
+      onGetTodos : '&', // bind to expression of same name
+      onRemoveTodo : '&',
+      onSaveTodo : '&'
     },
     templateUrl: 'components/todo-list/todo-list.html',
     controller : [
@@ -14,16 +17,24 @@ angular.module('angularjsTutorial')
 
           $log.log('ajtTodoList controller instantiated');
 
+
           self.getTodos = function(){
              return TodoService.getTodos()
               .then(function(todos){
                 self.todos = todos;
+                $scope.onGetTodos({
+                  todos : todos
+                });
                 return self.todos;
               });
           };
 
           self.removeTodo = function(todo){
-            return TodoService.removeTodo(todo);
+            return TodoService.removeTodo(todo, function(){
+              $scope.onRemoveTodo({
+                todo : todo
+              });
+            });
           };
 
 
@@ -34,13 +45,17 @@ angular.module('angularjsTutorial')
           };
 
           self.saveTodo = function(todo){
-            return TodoService.saveTodo(todo);
-          }
+            return TodoService.saveTodo(todo, function(){
+              $scope.onSaveTodo({
+                todo : todo
+              });
+            });
+          };
 
           self.getTodos();
         }
       ],
-      controllerAs : 'ajsTodoListCtrl'
+      controllerAs : 'ajstTodoListCtrl'
     }
 
   }

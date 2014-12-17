@@ -20,4 +20,16 @@ angular.module('angularjsTutorial')
       });
     };
 
+    self.onGetTodos = function(todos){
+      $log.log('MainCtrl onGetTodos called', todos);
+    };
+
+    self.onRemoveTodo = function(todo){
+      $log.log('MainCtrl onRemoveTodo called', todo);
+    };
+
+    self.onSaveTodo = function(todo){
+      $log.log('MainCtrl onSaveTodo called', todo);
+    };
+
   }]);
