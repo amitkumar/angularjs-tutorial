@@ -2,35 +2,62 @@ angular.module('angularjsTutorial')
 .directive('ajstTodoList', function() {
   return {
     templateUrl : 'components/todo-list/todo-list.html',
-    scope : {},
+    transclude : true,
+    scope : {
+      onGetTodos : '&',
+      onRemoveTodo : '&',
+      onSaveTodo : '&',
+      newTodoTitle : '='
+    },
+    controllerAs : 'ajstTodoListCtrl',
     controller : [
       '$scope', '$element', '$attrs', '$transclude', '$log', 'TodoFireService',
       function ($scope, $element, $attrs, $transclude, $log, TodoFireService){
         $log.log('ajstTodoList controller instantiated');
 
-        $scope.getTodos = function(){
+        var self = this;
+
+        self.getTodos = function(){
             return TodoFireService.getTodos()
             .then(function(todos){
-              $scope.todos = todos;
-              return $scope.todos;
+              self.todos = todos;
+              $log.log('ajstTodoList calling $scope.onGetTodos()');
+              $scope.onGetTodos({
+                todos : self.todos
+              });
+              return self.todos;
             });
         };
 
-        $scope.removeTodo = function(todo){
-          return TodoFireService.removeTodo(todo);
+        self.removeTodo = function(todo){
+          return TodoFireService
+          .removeTodo(todo)
+          .then(function(){
+            $log.log('ajstTodoList calling $scope.onRemoveTodo()');
+            $scope.onRemoveTodo({
+              todo: todo
+            });
+          });
         };
 
-        $scope.getTodoClasses = function(todo){
+        self.getTodoClasses = function(todo){
           return {
             'completed' : todo.completed
           }
         };
 
-        $scope.saveTodo = function(todo){
-          return TodoFireService.saveTodo(todo);
+        self.saveTodo = function(todo){
+          return TodoFireService
+          .saveTodo(todo)
+          .then(function(){
+            $log.log('ajstTodoList calling $scope.onSaveTodo()');
+            $scope.onSaveTodo({
+              todo : todo
+            });
+          });
         };
 
-        $scope.getTodos();
+        self.getTodos();
       }
     ]
   };
