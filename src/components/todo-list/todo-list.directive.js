@@ -7,7 +7,8 @@ angular.module('angularjsTutorial')
       onGetTodos : '&',
       onRemoveTodo : '&',
       onSaveTodo : '&',
-      newTodoTitle : '='
+      newTodoTitle : '=',
+      user : '='
     },
     controllerAs : 'ajstTodoListCtrl',
     controller : [
@@ -18,7 +19,7 @@ angular.module('angularjsTutorial')
         var self = this;
 
         self.getTodos = function(){
-            return TodoFireService.getTodos()
+            return TodoFireService.getTodos($scope.user)
             .then(function(todos){
               self.todos = todos;
               $log.log('ajstTodoList calling $scope.onGetTodos()');
@@ -31,7 +32,7 @@ angular.module('angularjsTutorial')
 
         self.removeTodo = function(todo){
           return TodoFireService
-          .removeTodo(todo)
+          .removeTodo(self.todos, todo)
           .then(function(){
             $log.log('ajstTodoList calling $scope.onRemoveTodo()');
             $scope.onRemoveTodo({
@@ -48,7 +49,7 @@ angular.module('angularjsTutorial')
 
         self.saveTodo = function(todo){
           return TodoFireService
-          .saveTodo(todo)
+          .saveTodo(self.todos, todo)
           .then(function(){
             $log.log('ajstTodoList calling $scope.onSaveTodo()');
             $scope.onSaveTodo({

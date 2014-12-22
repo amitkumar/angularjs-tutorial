@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('angularjsTutorial')
-  .controller('MainCtrl', ['$scope', '$log', '$q', 'TodoFireService', function ($scope, $log, $q, TodoFireService) {
+.controller('MainCtrl', ['$scope', '$log', '$q', 'TodoFireService',
+  function ($scope, $log, $q, TodoFireService) {
     $log.log('MainCtrl instantiated');
+
     var self = this;
 
     self.newTodoTitle = '';
@@ -10,7 +12,7 @@ angular.module('angularjsTutorial')
     self.addTodo = function(options){
       var newTodo;
 
-      return TodoFireService.addTodo(options)
+      return TodoFireService.addTodo(self.todos, options)
       .then(function(newTodoResult){
         newTodo = newTodoResult;
         self.newTodoTitle = '';
@@ -20,7 +22,8 @@ angular.module('angularjsTutorial')
       });
     };
 
-    self.onGetTodos = function(todos){
+    self.onGetTodos = function(syncedTodos){
+      self.todos = syncedTodos;
       $log.log('MainCtrl.onGetTodos called', todos);
     };
 
@@ -32,4 +35,5 @@ angular.module('angularjsTutorial')
       $log.log('MainCtrl.onSaveTodo called', todo);
     };
 
-  }]);
+  }
+]);
