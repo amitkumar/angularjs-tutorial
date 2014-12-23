@@ -4,14 +4,14 @@ angular.module('angularjsTutorial')
   .factory('TodoFireService', ['$window', '$log', '$q', '$timeout', '$firebase', 'firebaseUrl', function ($window, $log, $q, $timeout, $firebase, firebaseUrl) {
     $log.log('TodoFireService instantiated');
 
+    var todos;
+
     return {
       getTodos : function(user){
-        var todos;
-
-        var firebaseReference = new $window.Firebase(firebaseUrl + '/users/' + user.uid + '/todos');
-        var firebaseSync = $firebase(firebaseReference);
-
         var deferred = $q.defer();
+
+        var firebaseReference = new Firebase(firebaseUrl + 'users/' + user.uid + '/todos');
+        var firebaseSync = $firebase(firebaseReference);
 
         firebaseSync.$asArray().$loaded().then(function(response){
           todos = response;
@@ -26,7 +26,7 @@ angular.module('angularjsTutorial')
         return deferred.promise;
       },
 
-      addTodo : function(todos, options){
+      addTodo : function(options){
         var deferred = $q.defer();
 
         todos.$add({
@@ -45,7 +45,7 @@ angular.module('angularjsTutorial')
         return deferred.promise;
       },
 
-      removeTodo : function(todos, todo){
+      removeTodo : function(todo){
         var deferred = $q.defer();
 
         todos.$remove(todo).then(function(todoRef){
@@ -61,7 +61,7 @@ angular.module('angularjsTutorial')
         return deferred.promise;
       },
 
-      saveTodo : function(todos, todo){
+      saveTodo : function(todo){
         var deferred = $q.defer();
 
         todos.$save(todo).then(function(todoRef){

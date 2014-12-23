@@ -32,7 +32,7 @@ angular.module('angularjsTutorial')
 
         self.removeTodo = function(todo){
           return TodoFireService
-          .removeTodo(self.todos, todo)
+          .removeTodo(todo)
           .then(function(){
             $log.log('ajstTodoList calling $scope.onRemoveTodo()');
             $scope.onRemoveTodo({
@@ -49,7 +49,7 @@ angular.module('angularjsTutorial')
 
         self.saveTodo = function(todo){
           return TodoFireService
-          .saveTodo(self.todos, todo)
+          .saveTodo(todo)
           .then(function(){
             $log.log('ajstTodoList calling $scope.onSaveTodo()');
             $scope.onSaveTodo({
