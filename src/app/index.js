@@ -26,6 +26,12 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
         url: '/contact',
         templateUrl: 'app/contact/contact.html',
         controller: 'ContactCtrl as contactCtrl'
+      })
+
+      .state('graphs', {
+        url: '/graphs',
+        templateUrl: 'app/graphs/graphs.html',
+        controller: 'GraphsCtrl as graphsCtrl'
       });
 
     $urlRouterProvider.otherwise('/');
