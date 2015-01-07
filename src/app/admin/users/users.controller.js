@@ -23,6 +23,12 @@ angular.module('angularjsTutorial')
           name : 'roles.admin',
           displayName : 'Admin',
           type : 'boolean'
+        },
+        {
+          name : 'todosCount',
+          displayName : 'Number of Todos',
+          field : 'getTodosCount()',
+          enableCellEdit: false
         }
       ],
       onRegisterApi : function(gridApi){
@@ -42,9 +48,22 @@ angular.module('angularjsTutorial')
     };
 
 
+    var getTodosCount = function(){
+      // called with the context of a user object
+      if (!this.todos){ return 0;}
+
+      return Object.keys(this.todos).length;
+    };
+
     UserService.get()
     .then(function(users){
-      self.uiGridOptions.data = self.users = users;
+      self.users = users;
+
+      self.users.forEach(function(user){
+        user.getTodosCount = getTodosCount;
+      });
+
+      self.uiGridOptions.data = self.users;
     })
     .catch(function(err){
       $log.log('AdminUsersCtrl error on UserService.get', err);
