@@ -17,7 +17,7 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
       })
 
       .state('admin', {
-        url: '/',
+        url: '/admin',
         templateUrl: 'app/admin/admin.html',
         controller: 'AdminCtrl as adminCtrl',
         resolve : {
@@ -42,6 +42,12 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
             return deferred.promise;
           }]
         }
+      })
+
+      .state('admin.users', {
+        url: '/users',
+        templateUrl: 'app/admin/users/users.html',
+        controller: 'AdminUsersCtrl as adminUsersCtrl'
       })
 
       .state('login', {
