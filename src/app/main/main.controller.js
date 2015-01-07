@@ -24,7 +24,7 @@ angular.module('angularjsTutorial')
 
     self.onGetTodos = function(syncedTodos){
       self.todos = syncedTodos;
-      $log.log('MainCtrl.onGetTodos called', todos);
+      $log.log('MainCtrl.onGetTodos called', self.todos);
     };
 
     self.onRemoveTodo = function(todo){

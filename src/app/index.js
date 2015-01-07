@@ -16,6 +16,34 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
         }
       })
 
+      .state('admin', {
+        url: '/',
+        templateUrl: 'app/admin/admin.html',
+        controller: 'AdminCtrl as adminCtrl',
+        resolve : {
+          'user' : ['AuthService', 'UserService', '$q', function(AuthService, UserService, $q){
+            var deferred = $q.defer();
+
+            AuthService.requireUser()
+            .then(function(authData){
+              return UserService.get(authData.uid);
+            })
+            .then(function(user){
+              if (user.roles.admin){
+                deferred.resolve();
+              } else {
+                deferred.reject('ADMIN_REQUIRED');
+              }
+            })
+            .catch(function(err){
+              deferred.reject(err);
+            });
+
+            return deferred.promise;
+          }]
+        }
+      })
+
       .state('login', {
         url: '/login?redirect',
         templateUrl: 'app/login/login.html',
@@ -51,12 +79,20 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
   ])
 
 
-  .controller('GlobalCtrl', ['AuthService', '$log', '$state', function(AuthService, $log, $state){
+  .controller('GlobalCtrl', ['AuthService', 'UserService', '$log', '$state', function(AuthService, UserService, $log, $state){
     var self = this;
 
-    AuthService.onAuth(function(user){
-      $log.log('AuthService.onAuth', user);
-      self.user = user;
+    AuthService.onAuth(function(authData){
+      $log.log('AuthService.onAuth', authData);
+      self.user = authData;
+
+      if (!authData){ return;}
+
+      UserService.get(authData.uid).then(function(user){
+        self.userData = user;
+        $log.log('UserService.get user retrieved', self.userData);
+      });
+
     });
 
     $log.log('User is ', this.user);

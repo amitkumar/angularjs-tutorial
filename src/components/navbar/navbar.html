@@ -10,6 +10,7 @@
       <li class="active"><a ui-sref="home">Home</a></li>
       <li><a ui-sref="contact">Contact</a></li>
       <li><a ui-sref="graphs">Graphs</a></li>
+      <li ng-show="globalCtrl.userData.roles.admin"><a ui-sref="admin">Admin</a></li>
       <li><a ui-sref="login" ng-hide="globalCtrl.user">Log In</a></li>
       <li><a ng-href="#" ng-show="globalCtrl.user" ng-click="globalCtrl.logout()">Log Out</a></li>
     </ul>
