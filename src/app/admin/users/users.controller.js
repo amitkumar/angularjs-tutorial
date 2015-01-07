@@ -18,8 +18,27 @@ angular.module('angularjsTutorial')
         {
           name : 'profile.email',
           enableCellEdit: false
+        },
+        {
+          name : 'roles.admin',
+          displayName : 'Admin',
+          type : 'boolean'
         }
-      ]
+      ],
+      onRegisterApi : function(gridApi){
+        //set gridApi on scope
+        self.gridApi = gridApi;
+        gridApi.edit.on.afterCellEdit($scope, self.saveCell);
+      }
+    };
+
+
+
+    self.saveCell = function(rowEntity, colDef, newValue, oldValue){
+      $log.log('gridApi.edit.on.afterCellEdit', rowEntity, colDef, newValue, oldValue);
+      self.users.$save(rowEntity);
+      // If you made any changes to data that Angular should know about, call $scope.apply()
+      $scope.$apply();
     };
 
 
