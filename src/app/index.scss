@@ -76,4 +76,11 @@
 }
 
 
+.admin-page {
+  .user-grid {
+    width: 100%;
+    height: 30em;
+  }
+}
+
 @import "../components/todo-graph/todo-graph";

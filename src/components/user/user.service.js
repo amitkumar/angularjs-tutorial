@@ -5,7 +5,7 @@ angular.module('angularjsTutorial')
     $log.log('UserService instantiated');
 
     return {
-      get : function(userId){
+      getById : function(userId){
         var deferred = $q.defer();
 
         var firebaseReference = new Firebase(firebaseUrl + 'users/' + userId);
@@ -13,7 +13,24 @@ angular.module('angularjsTutorial')
 
         firebaseSync.$asObject().$loaded().then(function(response){
 
-          $log.log('user loaded', response);
+          $log.log('UserService.getById loaded', response);
+
+          deferred.resolve(response);
+        }).catch(function(err){
+          $log.log('Error retrieving user from firebase', err);
+        });
+
+        return deferred.promise;
+      },
+      get : function(){
+        var deferred = $q.defer();
+
+        var firebaseReference = new Firebase(firebaseUrl + 'users/');
+        var firebaseSync = $firebase(firebaseReference);
+
+        firebaseSync.$asArray().$loaded().then(function(response){
+
+          $log.log('UserService.get loaded', response);
 
           deferred.resolve(response);
         }).catch(function(err){

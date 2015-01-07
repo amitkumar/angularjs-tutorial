@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'firebase'])
+angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'firebase', 'ui.grid', 'ui.grid.edit', 'ui.grid.cellNav'])
   .constant('firebaseUrl', 'https://ak-angularjstutorial.firebaseio.com/')
 
   .config(function ($stateProvider, $urlRouterProvider) {
@@ -26,7 +26,7 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
 
             AuthService.requireUser()
             .then(function(authData){
-              return UserService.get(authData.uid);
+              return UserService.getById(authData.uid);
             })
             .then(function(user){
               if (user.roles.admin){
@@ -94,9 +94,9 @@ angular.module('angularjsTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSan
 
       if (!authData){ return;}
 
-      UserService.get(authData.uid).then(function(user){
+      UserService.getById(authData.uid).then(function(user){
         self.userData = user;
-        $log.log('UserService.get user retrieved', self.userData);
+        $log.log('UserService.getById user retrieved', self.userData);
       });
 
     });
