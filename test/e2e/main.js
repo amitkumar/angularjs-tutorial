@@ -36,8 +36,8 @@ describe('The main view', function () {
             }
           });
         },
-        2000,
-        'browser never redirected to home'
+        5000,
+        'browser never redirected to home after login'
       );
     });
 
@@ -53,8 +53,8 @@ describe('The main view', function () {
             }
           });
         },
-        2000,
-        'browser never redirected to home'
+        5000,
+        'browser never redirected to home after logout'
       );
     });
 
@@ -62,8 +62,21 @@ describe('The main view', function () {
       expect(browser.getCurrentUrl()).toEqual('https://localhost:3000/#/');
     });
 
-    it('shows the new todo form', function(){
+    it('allows adding a todo through the new todo form', function(){
       expect(element(by.model('mainCtrl.newTodoTitle')).isDisplayed()).toBe(true);
+
+      var todosFinder = element.all(by.repeater('todo in ajstTodoListCtrl.todos track by todo.$id'));
+
+      element.all(by.repeater('todo in ajstTodoListCtrl.todos track by todo.$id')).count()
+      .then(function(originalCount){
+        var newTodoTitle = 'new todo title ' + Date.now();
+        element(by.model('mainCtrl.newTodoTitle')).sendKeys(newTodoTitle);
+        element(by.model('mainCtrl.newTodoTitle')).submit();
+
+        var newCount = element.all(by.repeater('todo in ajstTodoListCtrl.todos track by todo.$id')).count();
+
+        expect(newCount).toEqual(originalCount + 1);
+      });
     });
   });
 });
