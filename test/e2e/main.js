@@ -41,10 +41,29 @@ describe('The main view', function () {
       );
     });
 
+    afterEach(function(){
+      element(by.linkText('Log Out')).click();
+      browser.wait(function() {
+          // keeps waiting until the returned promise resolves to true
+          return browser.getCurrentUrl().then(function(url){
+            if (url === 'https://localhost:3000/#/login?redirect=home'){
+              return true;
+            } else {
+              return;
+            }
+          });
+        },
+        2000,
+        'browser never redirected to home'
+      );
+    });
+
     it('shows the home page', function(){
       expect(browser.getCurrentUrl()).toEqual('https://localhost:3000/#/');
     });
 
-
+    it('shows the new todo form', function(){
+      expect(element(by.model('mainCtrl.newTodoTitle')).isDisplayed()).toBe(true);
+    });
   });
 });
