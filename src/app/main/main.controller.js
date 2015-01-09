@@ -12,7 +12,7 @@ angular.module('angularjsTutorial')
     self.addTodo = function(options){
       var newTodo;
 
-      return TodoFireService.addTodo(self.todos, options)
+      return TodoFireService.addTodo(options)
       .then(function(newTodoResult){
         newTodo = newTodoResult;
         self.newTodoTitle = '';
