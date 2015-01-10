@@ -66,14 +66,15 @@ describe('The main view', function () {
       expect(element(by.model('mainCtrl.newTodoTitle')).isDisplayed()).toBe(true);
 
       var todosFinder = element.all(by.repeater('todo in ajstTodoListCtrl.todos track by todo.$id'));
+      var todoTitleInput = element(by.model('mainCtrl.newTodoTitle'));
 
-      element.all(by.repeater('todo in ajstTodoListCtrl.todos track by todo.$id')).count()
+      todosFinder.count()
       .then(function(originalCount){
         var newTodoTitle = 'new todo title ' + Date.now();
-        element(by.model('mainCtrl.newTodoTitle')).sendKeys(newTodoTitle);
-        element(by.model('mainCtrl.newTodoTitle')).submit();
+        todoTitleInput.sendKeys(newTodoTitle);
+        todoTitleInput.submit();
 
-        var newCount = element.all(by.repeater('todo in ajstTodoListCtrl.todos track by todo.$id')).count();
+        var newCount = todosFinder.count();
 
         expect(newCount).toEqual(originalCount + 1);
       });
