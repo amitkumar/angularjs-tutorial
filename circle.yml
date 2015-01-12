@@ -1,0 +1,4 @@
+## Customize test commands
+test:
+  override:
+    - ./node_modules/gulp/bin/gulp.js test

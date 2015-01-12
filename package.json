@@ -43,6 +43,6 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "precommit": "gulp test"
+    "test" : "./node_modules/gulp/bin/gulp.js test"
   }
 }
